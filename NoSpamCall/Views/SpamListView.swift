@@ -11,6 +11,18 @@ struct SpamListView: View {
             .onDelete(perform: viewModel.deleteSpamNumber)
         }
         .navigationTitle("spam_list_title".localized)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button(action: {
+                    viewModel.toggleSortOrder()
+                }) {
+                    HStack {
+                        Text(viewModel.sortOrder.localizedName)
+                        Image(systemName: viewModel.sortOrder == .ascending ? "arrow.up" : "arrow.down")
+                    }
+                }
+            }
+        }
         .onAppear {
             viewModel.loadSpamNumbers()
         }

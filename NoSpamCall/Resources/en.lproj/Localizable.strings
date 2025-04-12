@@ -14,6 +14,8 @@
 
 /* Spam List View */
 "spam_list_title" = "Spam Number List";
+"sort_ascending" = "Sort A-Z";
+"sort_descending" = "Sort Z-A";
 
 /* Country */
 "country_code_korea" = "Korea (+82)";
