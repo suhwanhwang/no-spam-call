@@ -22,7 +22,14 @@ class MainViewModel: ObservableObject {
     init() {
         // Set initial country code based on current locale
         let locale = Locale.current
-        let regionCode = locale.regionCode?.lowercased() ?? ""
+        let regionCode: String
+        
+        if #available(iOS 16, *) {
+            regionCode = locale.region?.identifier.lowercased() ?? ""
+        } else {
+            // For older iOS versions
+            regionCode = locale.regionCode?.lowercased() ?? ""
+        }
         
         switch regionCode {
         case "kr":
