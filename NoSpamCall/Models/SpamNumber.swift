@@ -1,50 +1,14 @@
-//
-//  SpamListView.swift
-//  NoSpamCall
-//
-//  Created by Suhwan Hwang on 4/12/25.
-//
+import Foundation
 
-import SwiftUI
-import CallKit
-
-struct SpamListView: View {
-    @State private var spamList: [String] = []
-
-    var body: some View {
-        List {
-            ForEach(spamList, id: \.self) { number in
-                Text(formatPhoneNumber(number))
-            }
-            .onDelete(perform: deleteSpam)
-        }
-        .navigationTitle("스팸 번호 목록")
-        .onAppear {
-            loadSpamList()
-        }
-    }
-
-    func loadSpamList() {
-        let defaults = UserDefaults(suiteName: appGroupID)
-        spamList = defaults?.array(forKey: "spamList") as? [String] ?? []
-    }
-
-    func deleteSpam(at offsets: IndexSet) {
-        let defaults = UserDefaults(suiteName: appGroupID)
-        var list = defaults?.array(forKey: "spamList") as? [String] ?? []
-        list.remove(atOffsets: offsets)
-        defaults?.set(list, forKey: "spamList")
-        spamList = list
-
-        // Reload CallKit Extension
-        CXCallDirectoryManager.sharedInstance.reloadExtension(withIdentifier: extensionBundleID) { error in
-            if let error = error {
-                print("❌ Reload failed: \(error.localizedDescription)")
-            }
-        }
+struct SpamNumber: Identifiable, Hashable {
+    let id: UUID = UUID()
+    let value: String
+    
+    var formattedNumber: String {
+        formatPhoneNumber(value)
     }
     
-    func formatPhoneNumber(_ number: String) -> String {
+    private func formatPhoneNumber(_ number: String) -> String {
         // 숫자만 남기기
         let digits = number.filter { $0.isNumber }
         
@@ -76,4 +40,4 @@ struct SpamListView: View {
         
         return number
     }
-}
+} 
