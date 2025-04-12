@@ -8,6 +8,6 @@ enum Constants {
     enum CountryCode {
         static let korea = "82"
         static let usa = "1"
-        // 다른 국가 코드들도 추가 가능
+        // Other country codes can be added here
     }
 } 

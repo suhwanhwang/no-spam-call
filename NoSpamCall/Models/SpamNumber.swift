@@ -9,35 +9,74 @@ struct SpamNumber: Identifiable, Hashable {
     }
     
     private func formatPhoneNumber(_ number: String) -> String {
-        // 숫자만 남기기
+        // Extract only digits
         let digits = number.filter { $0.isNumber }
         
-        // 국가번호가 두 자리가 되도록 처리
-        if digits.count > 2 {
-            let countryCode = digits.prefix(2)  // 국가번호 2자리
-            let localNumber = digits.dropFirst(2)
+        // Too short numbers are returned as-is
+        guard digits.count >= 7 else { return number }
+        
+        // For Korean numbers (starting with 82)
+        if digits.hasPrefix("82") {
+            let localNumber = String(digits.dropFirst(2))
+            let lastFourDigits = localNumber.suffix(4)
+            let remainingDigits = localNumber.dropLast(4)
             
-            // 지역번호가 2자리 또는 3자리로 구분됨
-            if localNumber.count == 9 {
-                let areaCode = localNumber.prefix(2)
-                let firstPart = localNumber.dropFirst(2).prefix(3)
-                let secondPart = localNumber.suffix(4)
-                return "+\(countryCode)-\(areaCode)-\(firstPart)-\(secondPart)"
-            } else if localNumber.count == 10 {
-                let areaCode = localNumber.prefix(2)
-                let firstPart = localNumber.dropFirst(2).prefix(4)
-                let secondPart = localNumber.suffix(4)
-                return "+\(countryCode)-\(areaCode)-\(firstPart)-\(secondPart)"
-            } else if localNumber.count == 11 {
-                let areaCode = localNumber.prefix(3)
-                let firstPart = localNumber.dropFirst(3).prefix(4)
-                let secondPart = localNumber.suffix(4)
-                return "+\(countryCode)-\(areaCode)-\(firstPart)-\(secondPart)"
+            // Seoul area code (single digit - 2)
+            if localNumber.hasPrefix("2") {
+                return "+82 2-\(localNumber.dropFirst(1).prefix(localNumber.count - 5))-\(lastFourDigits)"
+            }
+            
+            // Two-digit area codes (metropolitan cities and provinces)
+            if remainingDigits.count >= 2 {
+                let areaCode = remainingDigits.prefix(2)  // 31, 32, 33, etc.
+                let middlePart = remainingDigits.dropFirst(2)
+                
+                if middlePart.isEmpty {
+                    return "+82 \(areaCode)-\(lastFourDigits)"
+                } else {
+                    return "+82 \(areaCode)-\(middlePart)-\(lastFourDigits)"
+                }
+            }
+            
+            // Other cases (mobile phones, etc.)
+            if remainingDigits.count <= 3 {
+                return "+82 \(remainingDigits)-\(lastFourDigits)"
             } else {
-                return number // 예외 처리: 잘못된 번호
+                let areaCode = remainingDigits.prefix(3)  // Carrier code, etc.
+                let middlePart = remainingDigits.dropFirst(3)
+                
+                if middlePart.isEmpty {
+                    return "+82 \(areaCode)-\(lastFourDigits)"
+                } else {
+                    return "+82 \(areaCode)-\(middlePart)-\(lastFourDigits)"
+                }
             }
         }
         
-        return number
+        // For other countries
+        // Simple formatting based on length
+        let countryCodeLength: Int
+        if digits.hasPrefix("1") {       // USA/Canada
+            countryCodeLength = 1
+        } else if digits.hasPrefix("7") { // Russia
+            countryCodeLength = 1
+        } else if digits.count >= 10 {    // Most other countries
+            countryCodeLength = 2
+        } else {
+            countryCodeLength = digits.count < 9 ? 1 : 2
+        }
+        
+        let countryCode = digits.prefix(countryCodeLength)
+        let localNumber = String(digits.dropFirst(countryCodeLength))
+        
+        // Always separate the last 4 digits
+        let lastDigits = localNumber.suffix(4)
+        let firstDigits = localNumber.dropLast(4)
+        
+        if firstDigits.isEmpty {
+            return "+\(countryCode) \(lastDigits)"
+        } else {
+            return "+\(countryCode) \(firstDigits)-\(lastDigits)"
+        }
     }
-} 
+}

@@ -74,9 +74,9 @@ class SpamNumberService {
     func reloadExtension() {
         CXCallDirectoryManager.sharedInstance.reloadExtension(withIdentifier: Constants.extensionBundleID) { error in
             if let error = error {
-                print("❌ Extension 리로드 실패: \(error.localizedDescription)")
+                print("❌ Extension reload failed: \(error.localizedDescription)")
             } else {
-                print("🔄 Extension 리로드 성공")
+                print("🔄 Extension reload successful")
             }
         }
     }

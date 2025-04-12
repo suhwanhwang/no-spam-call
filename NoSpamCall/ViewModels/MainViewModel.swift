@@ -20,7 +20,7 @@ class MainViewModel: ObservableObject {
     // MARK: - Initialization
 
     init() {
-        // 현재 로케일에 따라 초기 국가 코드 설정
+        // Set initial country code based on current locale
         let locale = Locale.current
         let regionCode = locale.regionCode?.lowercased() ?? ""
         

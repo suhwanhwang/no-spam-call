@@ -6,9 +6,9 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                // 국가 선택 및 전화번호 입력
+                // Country selection and phone number input
                 HStack {
-                    // 국가 코드 선택 버튼
+                    // Country code selection button
                     Button(action: {
                         viewModel.showCountryPicker = true
                     }) {
@@ -88,7 +88,7 @@ struct MainView: View {
         }
     }
     
-    // 국가 코드 선택 시트
+    // Country code selection sheet
     private var countryPickerView: some View {
         NavigationView {
             List {
