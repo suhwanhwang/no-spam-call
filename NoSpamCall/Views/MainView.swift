@@ -6,13 +6,31 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
-                TextField("전화번호 입력 또는 붙여넣기", text: $viewModel.phoneNumber)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .keyboardType(.numberPad)
-                    .padding()
+                // 국가 선택 및 전화번호 입력
+                HStack {
+                    // 국가 코드 선택 버튼
+                    Button(action: {
+                        viewModel.showCountryPicker = true
+                    }) {
+                        let countryName = viewModel.availableCountryCodes.first(where: { $0.code == viewModel.selectedCountryCode })?.name ?? ""
+                        Text(countryName)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(6)
+                    }
+                    .sheet(isPresented: $viewModel.showCountryPicker) {
+                        countryPickerView
+                    }
+                    
+                    TextField("phone_input".localized, text: $viewModel.phoneNumber)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .keyboardType(.numberPad)
+                }
+                .padding()
 
                 HStack {
-                    Button("검색") {
+                    Button("search_button".localized) {
                         viewModel.search()
                     }
                     .padding()
@@ -20,7 +38,7 @@ struct MainView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
 
-                    Button("클립보드") {
+                    Button("clipboard_button".localized) {
                         viewModel.searchFromClipboard()
                     }
                     .padding()
@@ -28,7 +46,7 @@ struct MainView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
 
-                    Button("스팸등록") {
+                    Button("register_spam_button".localized) {
                         viewModel.registerSpam()
                     }
                     .padding()
@@ -37,7 +55,7 @@ struct MainView: View {
                     .cornerRadius(10)
 
                     NavigationLink(destination: SpamListView()) {
-                        Text("등록번호조회")
+                        Text("view_list_button".localized)
                             .padding()
                             .background(Color.gray)
                             .foregroundColor(.white)
@@ -52,20 +70,43 @@ struct MainView: View {
                     Spacer()
                 }
             }
-            .navigationTitle("No Spam Call")
+            .navigationTitle("app_title".localized)
             .alert(isPresented: $viewModel.showClipboardAlert) {
                 Alert(
-                    title: Text("유효한 전화번호가 아닙니다"),
-                    message: Text("클립보드에 올바른 번호가 없습니다."),
-                    dismissButton: .default(Text("확인"))
+                    title: Text("invalid_number_title".localized),
+                    message: Text("invalid_number_message".localized),
+                    dismissButton: .default(Text("ok_button".localized))
                 )
             }
             .alert(isPresented: $viewModel.showRegisterAlert) {
                 Alert(
-                    title: Text("등록 완료"),
-                    message: Text("스팸 번호로 저장했어요."),
-                    dismissButton: .default(Text("확인"))
+                    title: Text("registered_title".localized),
+                    message: Text("registered_message".localized),
+                    dismissButton: .default(Text("ok_button".localized))
                 )
+            }
+        }
+    }
+    
+    // 국가 코드 선택 시트
+    private var countryPickerView: some View {
+        NavigationView {
+            List {
+                ForEach(viewModel.availableCountryCodes, id: \.code) { country in
+                    Button(action: {
+                        viewModel.selectCountryCode(country.code)
+                    }) {
+                        Text(country.name)
+                    }
+                }
+            }
+            .navigationTitle("country_picker_title".localized)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("ok_button".localized) {
+                        viewModel.showCountryPicker = false
+                    }
+                }
             }
         }
     }

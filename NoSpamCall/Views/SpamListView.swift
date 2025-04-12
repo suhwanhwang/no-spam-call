@@ -10,7 +10,7 @@ struct SpamListView: View {
             }
             .onDelete(perform: viewModel.deleteSpamNumber)
         }
-        .navigationTitle("스팸 번호 목록")
+        .navigationTitle("spam_list_title".localized)
         .onAppear {
             viewModel.loadSpamNumbers()
         }

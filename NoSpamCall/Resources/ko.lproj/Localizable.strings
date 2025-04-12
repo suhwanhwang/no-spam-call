@@ -1,0 +1,20 @@
+/* Main View */
+"app_title" = "스팸콜 차단";
+"phone_input" = "전화번호 입력 또는 붙여넣기";
+"search_button" = "검색";
+"clipboard_button" = "클립보드";
+"register_spam_button" = "스팸등록";
+"view_list_button" = "등록번호조회";
+"invalid_number_title" = "유효한 전화번호가 아닙니다";
+"invalid_number_message" = "클립보드에 올바른 번호가 없습니다.";
+"registered_title" = "등록 완료";
+"registered_message" = "스팸 번호로 저장했어요.";
+"ok_button" = "확인";
+"country_picker_title" = "국가 선택";
+
+/* Spam List View */
+"spam_list_title" = "스팸 번호 목록";
+
+/* Country */
+"country_code_korea" = "한국 (+82)";
+"country_code_usa" = "미국 (+1)"; 

@@ -1,0 +1,20 @@
+/* Main View */
+"app_title" = "No Spam Call";
+"phone_input" = "Enter or paste phone number";
+"search_button" = "Search";
+"clipboard_button" = "Clipboard";
+"register_spam_button" = "Register Spam";
+"view_list_button" = "View List";
+"invalid_number_title" = "Invalid Phone Number";
+"invalid_number_message" = "No valid number in clipboard.";
+"registered_title" = "Registration Complete";
+"registered_message" = "The number has been saved as spam.";
+"ok_button" = "OK";
+"country_picker_title" = "Select Country";
+
+/* Spam List View */
+"spam_list_title" = "Spam Number List";
+
+/* Country */
+"country_code_korea" = "Korea (+82)";
+"country_code_usa" = "USA (+1)"; 

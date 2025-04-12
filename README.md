@@ -8,6 +8,7 @@ An iOS app to search and block spam phone numbers.
 - Clipboard Search: Automatically search phone numbers copied to the clipboard
 - Spam Registration: Register and block spam numbers in the app
 - Spam List Management: View and delete registered spam numbers
+- Multi-language Support: English and Korean languages supported
 
 ## Architecture
 
@@ -30,6 +31,13 @@ This project is implemented using the MVVM (Model-View-ViewModel) architecture.
 - **Services**: Data handling and external interactions
   - `SpamNumberService`: Spam number management service
   - `SearchService`: Search functionality service
+  
+- **Extensions**: Utility extensions
+  - `StringExtensions`: Localization support for strings
+
+- **Resources**: Localized resources
+  - Localizable.strings: UI text translations
+  - InfoPlist.strings: App name and metadata translations
 
 ## Requirements
 
@@ -57,6 +65,18 @@ To use the CallKit extension functionality, the following settings are required:
 
 1. App Groups configuration
 2. CallDirectory extension activation
+
+## Localization
+
+The app supports the following languages:
+- English (en)
+- Korean (ko)
+
+To add a new language:
+1. Create a new folder in Resources with the language code (e.g., `fr.lproj`)
+2. Copy the Localizable.strings and InfoPlist.strings files from an existing language
+3. Translate the strings to the new language
+4. Add the language to the project settings
 
 ## License
 
