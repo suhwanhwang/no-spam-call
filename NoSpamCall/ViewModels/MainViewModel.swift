@@ -37,7 +37,7 @@ class MainViewModel: ObservableObject {
         case "us":
             selectedCountryCode = Constants.CountryCode.usa
         default:
-            selectedCountryCode = Constants.CountryCode.korea
+            selectedCountryCode = Constants.CountryCode.usa
         }
     }
 
